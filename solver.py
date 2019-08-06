@@ -20,10 +20,11 @@ class State:
 class CubeString:
     def __init__(self, cube_state):
         self.cube_string = ''
+        self.scramble = ''
         self.cube_string_dict = {'U5': 'U', 'F5': 'F', 'R5': 'R', 'L5': 'L', 'D5': 'D', 'B5': 'B'}
         self.cube_state = cube_state
         self.edge_place = ['BL', 'BR', 'FR', 'FL', 'UB', 'UR', 'UF', 'UL', 'DB', 'DR', 'DF', 'DL']
-        self.corner_place = ['ULB', 'URB', 'URF', 'ULF', 'DLB', 'DRB', 'DRF', 'DLF']
+        self.corner_place = ['ULB', 'UBR', 'URF', 'UFL', 'DBL', 'DRB', 'DFR', 'DLF']
         self.cube_string_edge = [('B6', 'L4'), ('B4', 'R6'), ('F6', 'R4'), ('F4', 'L6'), ('U2', 'B2'), ('U6', 'R2'),
                                  ('U8', 'F2'), ('U4', 'L2'), ('D8', 'B8'), ('D6', 'R8'), ('D2', 'F8'), ('D4', 'L8')]
         self.cube_string_corner = [('U1', 'L1', 'B3'), ('U3', 'B1', 'R3'), ('U9', 'R1', 'F3'), ('U7', 'F1', 'L3'),
@@ -33,11 +34,13 @@ class CubeString:
                              'F9', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'L1', 'L2', 'L3',
                              'L4', 'L5', 'L6', 'L7', 'L8', 'L9', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7',
                              'B8', 'B9']
+        self.run()
 
     def run(self):
         self.set_corner_cubestring(self.cube_state)
         self.set_edge_cubestring(self.cube_state)
         self.convert_dict_to_string()
+        self.scramble = solve(self.cube_string)
 
     def set_corner_cubestring(self, cube_state):
         co = cube_state.co

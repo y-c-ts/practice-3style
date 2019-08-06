@@ -15,6 +15,50 @@ class State:
         new_ep = self.ep[move.ep]
         new_eo = (self.eo[move.ep] + move.eo) % 2
         return State(new_cp, new_co, new_ep, new_eo)
+    
+
+class DefineAlgState:
+    def __init__(self):
+        self.edge_normal = ['BL', 'BR', 'FR', 'FL', 'UB', 'UR', 'UF', 'UL', 'DB', 'DR', 'DF', 'DL']
+        self.edge_inv = ['LB', 'RB', 'RF', 'LF', 'BU', 'RU', 'FU', 'LU', 'BD', 'RD', 'FD', 'LD']
+        self.default_ep = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], dtype='int8')
+        self.default_eo = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype='int8')
+    
+    def _get_edge_ind(self, string):
+        arr1 = np.array(self.edge_normal)
+        arr2 = np.array(self.edge_inv)
+        res1 = np.where(arr1 == string)[0]
+        res2 = np.where(arr2 == string)[0]
+        if len(res1) > 0:
+            idx = res1[0]
+        else:
+            idx = res2[0]
+        return idx
+
+    def define_ep_state(self, buffer, str1, str2):
+        idx1 = self._get_edge_ind(str1)
+        idx2 = self._get_edge_ind(str2)
+        buffer_idx = self._get_edge_ind(buffer)
+        ep = self.default_ep
+        ep[buffer_idx] = idx1
+        ep[idx1] = idx2
+        ep[idx2] = buffer_idx
+        return ep
+
+    def define_eo_state(self, buffer, str1, str2):
+        buffer_idx = self._get_edge_ind(buffer)
+        idx1 = self._get_edge_ind(str1)
+        idx2 = self._get_edge_ind(str2)
+        eo = self.default_eo
+        if str1 in self.edge_inv:
+            eo[buffer_idx] = 1
+        if (str2 in self.edge_inv) and (str1 in self.edge_normal):
+            eo[idx1] = 1
+        elif (str2 in self.edge_normal) and (str1 in self.edge_inv):
+            eo[idx1] = 1
+        if str2 in self.edge_inv:
+            eo[idx2] = 1
+        return eo
 
 
 class CubeString:

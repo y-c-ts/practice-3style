@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="jumbotron">
+    <div class="container">
+        <h2 style="position: relative; left: -40px; top: -13px;">3styleを検索</h2>
+        <form method="POST" action="/register">
+            <input type="text" name="stickers" class="form-control" placeholder="例: UB-UR" aria-label="Recipient's username" aria-describedby="button-addon2" style="width:200px; position : relative; top: -5px;">
+
+            <button type="submit" class="btn btn-primary" style="position: relative; left: 220px; top: -43px;">実行</button>
+        </form>
+    <h2 style="font-size: 17px font-weight: bold;">{{ stickers }}</h2>
+    <ul>
+        <p style="font-size: 17px; font-weight: bold; color:red;">登録手順  :  {{my_alg}} </p>
+        <li style="position: margin-top: 10px;" >Jack :   {{jack}}</li>
+        <li >Graham :   {{graham}}</li>
+        <li >Daniel :   {{daniel}}</li>
+        <li >Ishaan :   {{ishaan}}</li>
+    </ul>
+     <form method="POST" action="/alg">
+
+            <h2 class="str" style="font-size: 30px; margin:30px; position : relative; top: 20px; left:-60px;">3styleを登録</h2>
+          <br>
+            <input type="text" name="stickers", value="{{ stickers }}" style=" display:none;width:0px; height:0px; position:relative; left:0px;top:320px;">
+            <div>
+                <p>{{stickers}} ：</p>
+                <input type="text" name="register1" class="form-control" placeholder="例: [U', R'ER]" aria-label="Recipient's username" aria-describedby="button-addon2" style="width:200px; position: relative; left: 55px; top: -47px;">
+            </div>
+            <div style="position: relative;top: -40px;">
+                 <p>{{ stickers_inv}} ：</p>
+                 <input type="text" name="register2" class="form-control" placeholder="例: [U', R'ER]" aria-label="Recipient's username" aria-describedby="button-addon2" style="width:200px; position: relative; left: 55px; top: -47px;">
+                 <button type="submit" class="btn btn-primary"  style="position: relative; left: 270px; top: -85px;">登録</button>
+            </div>
+     </form>
+    </div>
+  </div>
+
+{% endblock %}

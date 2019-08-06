@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="container">
+        <br>
+        <h2>登録手順一覧</h2>
+        <br>
+        <form method="GET" action="/alg">
+            <input type="text" name="search" class="form-control" placeholder="例: UB-" aria-label="Recipient's username" aria-describedby="button-addon2" style="width:200px; position : relative; top: -5px;">
+            <button type="submit" class="btn btn-primary" style="position: relative; left: 200px; top: -43px;">検索</button>
+        </form>
+      <table class="table table-responsive table-striped">
+          <thead>
+            <tr>
+                <th>位置</th>
+                <th>手順</th>
+            </tr>
+          </thead>
+          <tbody>
+                {% for key, value in all_alg.items() %}
+                  <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                  </tr>
+                {% endfor %}
+          </tbody>
+</table>
+    </div>
+
+
+{% endblock %}
+

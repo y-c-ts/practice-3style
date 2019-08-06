@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="jumbotron">
+    <div class="container">
+        <h2>3styleを検索</h2>
+        <br>
+        <form method="POST" action="/register">
+
+            <input type="text" name="stickers" class="form-control" placeholder="例: UB-UR" aria-label="Recipient's username" aria-describedby="button-addon2" style="width:200px; position : relative; top: -5px;">
+
+            <button type="submit" class="btn btn-primary" style="position: relative; left: 220px; top: -43px;">実行</button>
+        </form>
+    </div>
+  </div>
+
+{% endblock %}

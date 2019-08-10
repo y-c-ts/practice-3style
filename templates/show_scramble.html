@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="container">
+        <table class="table table-responsive table-striped">
+          <thead>
+            <tr>
+                <th></th>
+                <th>スクランブル</th>
+            </tr>
+          </thead>
+          <tbody>
+                {% for scramble in scrambles %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{ scramble }}</td>
+                  </tr>
+                {% endfor %}
+          </tbody>
+</table>
+     </div>
+{% endblock %}

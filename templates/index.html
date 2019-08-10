@@ -16,11 +16,50 @@
       position: relative;
       left: -5px;
     }
+
+       /* sense; */
+
+    .sense{
+        margin-top:40px;
+        margin-bottom:10px;
+    }
+
+    .sense label {
+        display:inline-block;
+        margin-left: 3px;
+        padding-top: 4.5px;
+        width: 65px;
+        height: 35px;
+        text-align: center;
+        color:#fff;
+        background-color:rgb(192, 217, 228);
+        border-radius: 50px;
+        font-size: 15px;
+      }
+
+
+    .sense input[type="radio"] {
+        display:none;
+
+      }
+
+    .sense input[type="checkbox"] {
+        display:none;
+
+      }
+
+    .sense input[type="checkbox"]:checked + label {
+        background-color:#1e90ff;
+    }
+
+    .sense input[type="radio"]:checked + label {
+        background-color:#1e90ff;
+      }
     </style>
   </head>
   <body>
    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="/" style="font-size:55px;">SearchAlg</a>
+      <a class="navbar-brand" href="/" style="font-size:55px;">3style-trainer</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,6 +70,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link top-a" href="/alg">手順一覧</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link top-a" href="/scramble">スクランブル生成</a>
           </li>
         </ul>
       </div>

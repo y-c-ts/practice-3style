@@ -1,5 +1,6 @@
 from kociemba import solve
 import numpy as np
+import itertools
 
 
 class State:
@@ -15,6 +16,84 @@ class State:
         new_ep = self.ep[move.ep]
         new_eo = (self.eo[move.ep] + move.eo) % 2
         return State(new_cp, new_co, new_ep, new_eo)
+
+
+class AlgState:
+    def __init__(self, edge_buffer, corner_buffer, state):
+        self.edge_normal = ['BL', 'BR', 'FR', 'FL', 'UB', 'UR', 'UF', 'UL', 'DB', 'DR', 'DF', 'DL']
+        self.edge_inv = ['LB', 'RB', 'RF', 'LF', 'BU', 'RU', 'FU', 'LU', 'BD', 'RD', 'FD', 'LD']
+        self.default_ep = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], dtype='int8')
+        self.default_eo = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype='int8')
+        self.default_co = np.array([0, 0, 0, 0, 0, 0, 0, 0], dtype='int8')
+        self.default_cp = np.array([0, 1, 2, 3, 4, 5, 6, 7], dtype='int8')
+        self.edge_target_cnd = []
+        self.edge_buffer = edge_buffer
+        self.corner_buffer = corner_buffer
+        self.state_class = state
+        self.edge_state_dict = {}
+        self.define_all_edge_alg_state()
+
+    def _get_edge_ind(self, string):
+        arr1 = np.array(self.edge_normal)
+        arr2 = np.array(self.edge_inv)
+        res1 = np.where(arr1 == string)[0]
+        res2 = np.where(arr2 == string)[0]
+        if len(res1) > 0:
+            idx = res1[0]
+        else:
+            idx = res2[0]
+        return idx
+
+    def define_ep_state(self, target1, target2):
+        idx1 = self._get_edge_ind(target1)
+        idx2 = self._get_edge_ind(target2)
+        buffer_idx = self._get_edge_ind(self.edge_buffer)
+        ep = self.default_ep.copy()
+        ep[buffer_idx] = idx1
+        ep[idx1] = idx2
+        ep[idx2] = buffer_idx
+        return ep
+
+    def define_eo_state(self, target1, target2):
+        buffer_idx = self._get_edge_ind(self.edge_buffer)
+        idx1 = self._get_edge_ind(target1)
+        idx2 = self._get_edge_ind(target2)
+        eo = self.default_eo.copy()
+        if target1 in self.edge_inv:
+            eo[buffer_idx] = 1
+        if (target2 in self.edge_inv) and (target1 in self.edge_normal):
+            eo[idx1] = 1
+        elif (target2 in self.edge_normal) and (target1 in self.edge_inv):
+            eo[idx1] = 1
+        if target2 in self.edge_inv:
+            eo[idx2] = 1
+        return eo
+
+    def make_alg_state(self, target1, target2):
+        eo = self.define_eo_state(target1, target2)
+        ep = self.define_ep_state(target1, target2)
+        state = self.state_class(self.default_cp, self.default_co, ep, eo)
+        return state
+
+    def define_all_edge_alg_state(self):
+        edges = self.edge_normal + self.edge_inv
+        edges.remove(self.edge_buffer)
+        edges.remove(self.edge_buffer[::-1])
+        for target1, target2 in itertools.permutations(edges, 2):
+            if target1 != target2[::-1]:
+                key = target1 + '-' + target2
+                self.edge_target_cnd.append(key)
+                self.edge_state_dict[key] = self.make_alg_state(target1, target2)
+
+    def get_multi_alg_state(self, targets):
+        for i, target in enumerate(targets):
+            target = target.split('-')[1] + '-' + target.split('-')[0]
+            if i == 0:
+                state = self.edge_state_dict[target]
+            else:
+                tmp_state = self.edge_state_dict[target]
+                state = state.apply_move(tmp_state)
+        return state
 
 
 class CubeString:
@@ -72,9 +151,3 @@ class CubeString:
     def convert_dict_to_string(self):
         for key in self.primary_list:
             self.cube_string += self.cube_string_dict[key]
-
-
-
-
-
-

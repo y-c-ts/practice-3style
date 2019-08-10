@@ -26,6 +26,7 @@ class AlgState:
         self.default_eo = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype='int8')
         self.default_co = np.array([0, 0, 0, 0, 0, 0, 0, 0], dtype='int8')
         self.default_cp = np.array([0, 1, 2, 3, 4, 5, 6, 7], dtype='int8')
+        self.edge_target_cnd = []
         self.edge_buffer = edge_buffer
         self.corner_buffer = corner_buffer
         self.state_class = state
@@ -81,6 +82,7 @@ class AlgState:
         for target1, target2 in itertools.permutations(edges, 2):
             if target1 != target2[::-1]:
                 key = target1 + '-' + target2
+                self.edge_target_cnd.append(key)
                 self.edge_state_dict[key] = self.make_alg_state(target1, target2)
 
     def get_multi_alg_state(self, targets):
@@ -149,4 +151,3 @@ class CubeString:
     def convert_dict_to_string(self):
         for key in self.primary_list:
             self.cube_string += self.cube_string_dict[key]
-            

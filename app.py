@@ -1,16 +1,61 @@
 from flask import Flask, request, render_template
 from get_alg import GetAlg, MyAlg
 import pandas as pd
-import solver as sv
+import numpy as np
+import random
+from solver import State, AlgState, CubeString
+import itertools
+N_EDGE_TARGET = 22
 
 app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def render_form():
-    cubestring = 'DUUBULDBFRBFRRULLLBRDFFFBLURDBFDFDRFRULBLUFDURRBLBDUDL'
-    a = sv.solve(cubestring, 20, 2)
-    print('----------------------------')
-    print(a)
     return render_template('register.html')
+
+@app.route('/scramble', methods=["GET"])
+def show_scramble():
+    alg_state_obj = AlgState('UF', 'ULB', State)
+    edge_targets = alg_state_obj.edge_target_cnd
+    edge_targets.sort()
+    edge_target_block = np.array_split(edge_targets[::-1], N_EDGE_TARGET)
+    key = []
+    for target in edge_target_block:
+        key.append(target[0][:2])
+    target_dict = dict(zip(key, edge_target_block))
+    if request.method == 'GET':
+        return render_template('scramble.html', targets=target_dict)
+
+@app.route('/scramble/result', methods=["POST"])
+def scramble():
+    alg_state_obj = AlgState('UF', 'ULB', State)
+    scramble_list = []
+    if request.method == 'POST':
+        target_list = request.form.getlist('target')
+        n_scramble = request.form['num_scramble']
+        for i in range(int(n_scramble)):
+            targets = select_target(target_list)
+            print(targets)
+            state = alg_state_obj.get_multi_alg_state(targets)
+            cube_string_obj = CubeString(state)
+            scramble = cube_string_obj.scramble
+            scramble_list.append(scramble)
+        return render_template('show_scramble.html', scrambles=np.unique(scramble_list))
+
+
+def select_target(target_list):
+    used_target_list = []
+    return_target_list = []
+    random.shuffle(target_list)
+    for target in target_list:
+        print(target)
+        target1, target2 = target.split('-')
+        ng_list = [target1, target1[::-1], target2, target2[::-1]]
+        if np.in1d(np.array(ng_list), np.array(used_target_list)).sum() == 0:
+            return_target_list.append(target)
+            if len(return_target_list) == 5:
+                break
+        used_target_list.extend(ng_list)
+    return return_target_list
 
 
 @app.route('/register', methods=["POST"])

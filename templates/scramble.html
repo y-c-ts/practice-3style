@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="container">
+        <br>
+        <h6 style="font-size:20px;"><b>手順を選択してください</b></h6>
+        <p> - 選択した3styleのみを使うスクランブルを生成します - </p>
+        <form method="POST" action="/scramble/result">
+        <div class="sense">
+              <table class="table table-responsive table-striped　">
+                  <tbody>
+                        {% for key, target_list in targets.items() %}
+                          <tr style>
+                              {% for target in target_list %}
+                              <td style="padding: 1px;">
+                                  <input type="checkbox" name="target" value="{{target}}" id="{{target}}">
+                                  <label for="{{target}}">{{ target }}</label>
+                              </td>
+                              {% endfor %}
+                          </tr>
+                        {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+            <input type="number" class="input" name="num_scramble" min="1" max="110" step="1" value="10" style="position:absolute; left: 530px; top: 160px; width:70px;">
+            <input type="submit" id="submit_button" class="btn btn-primary" name="test" onclick="get_buttons_content()" value="生成" style="position:absolute; left: 610px; top: 160px; width:90px;">
+        </form>
+     </div>
+{% endblock %}

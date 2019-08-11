@@ -1,3 +1,4 @@
+# coding: UTF-8
 from flask import Flask, request, render_template
 from get_alg import GetAlg, MyAlg
 import pandas as pd
@@ -5,12 +6,19 @@ import numpy as np
 import random
 from solver import State, AlgState, CubeString
 import itertools
+
 N_EDGE_TARGET = 22
+EDGE_NUMBARING = {'UR': 'え', 'UB': 'う', 'UL': 'い', 'FR': 'け', 'FD': 'ら', 'FL': 'か', 'RU': 'て', 'RB': 'ぬ',
+                  'RD': 'れ', 'RF': 'ね', 'LU': 'ち', 'LF': 'な', 'LD': 'り', 'LB': 'に', 'BU': 'つ', 'BR': 'く',
+                  'BD': 'る', 'BL': 'き', 'DF': 'さ', 'DR': 'せ', 'DB': 'す', 'DL': 'し'}
 
 app = Flask(__name__)
+
+
 @app.route('/', methods=['GET'])
 def render_form():
     return render_template('register.html')
+
 
 @app.route('/scramble', methods=["GET"])
 def show_scramble():
@@ -25,6 +33,7 @@ def show_scramble():
     if request.method == 'GET':
         return render_template('scramble.html', targets=target_dict)
 
+
 @app.route('/scramble/result', methods=["POST"])
 def scramble():
     alg_state_obj = AlgState('UF', 'ULB', State)
@@ -34,7 +43,6 @@ def scramble():
         n_scramble = request.form['num_scramble']
         for i in range(int(n_scramble)):
             targets = select_target(target_list)
-            print(targets)
             state = alg_state_obj.get_multi_alg_state(targets)
             cube_string_obj = CubeString(state)
             scramble = cube_string_obj.scramble
@@ -88,8 +96,10 @@ def register_alg():
             for key, value in all_alg.items():
                 if query in key:
                     return_dic[key] = value
-            return render_template('all_alg.html', all_alg=return_dic)
-        return render_template('all_alg.html', all_alg=all_alg)
+            numberings = make_numbering(return_dic)
+            return render_template('all_alg.html', all_alg=return_dic,  numberings=numberings)
+        numberings = make_numbering(all_alg)
+        return render_template('all_alg.html', all_alg=all_alg,  numberings=numberings)
     else:
         if request.form['stickers'] and request.form['register1'] and request.form['register2']:
             stickers = request.form['stickers']
@@ -97,9 +107,22 @@ def register_alg():
             register_alg1 = request.form['register1']
             register_alg2 = request.form['register2']
             my_alg_obj = MyAlg(first_sticker, second_sticker, register_alg1, register_alg2)
-            return render_template('all_alg.html', all_alg=my_alg_obj.my_alg_dic)
+            all_alg = my_alg_obj.my_alg_dic
+            numberings = make_numbering(all_alg)
+            return render_template('all_alg.html', all_alg=all_alg, numberings=numberings)
         else:
             return render_template('show_alg.html')
+
+
+def make_numbering(all_alg_dict):
+    keys = all_alg_dict.keys()
+    number_list = []
+    for key in keys:
+        sticker1, sticker2 = key.split('-')
+        first_str = EDGE_NUMBARING[sticker1]
+        second_str = EDGE_NUMBARING[sticker2]
+        number_list.append(first_str + second_str)
+    return number_list
 
 
 if __name__ == "__main__":

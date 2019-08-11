@@ -45,6 +45,7 @@ class MyAlg(object):
         self.set_alg()
         self.my_alg_dic = self.get_register_alg(self.my_df)
 
+
     def set_alg(self):
         self.my_df[self.sticker].loc[self.inv_sticker] = self.alg1
         self.my_df[self.inv_sticker].loc[self.sticker] = self.alg2

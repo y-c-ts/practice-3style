@@ -8,24 +8,37 @@
             <input type="text" name="search" class="form-control" placeholder="例: UB-" aria-label="Recipient's username" aria-describedby="button-addon2" style="width:200px; position : relative; top: -5px;">
             <button type="submit" class="btn btn-primary" style="position: relative; left: 200px; top: -43px;">検索</button>
         </form>
+        <form method="POST" action="/scramble/result">
+        <div class="sense1">
       <table class="table table-responsive table-striped">
           <thead>
             <tr>
-                <th>位置</th>
-                <th>手順</th>
+                <th style="text-align:center;">位置</th>
+                <th style="text-align:center;">手順</th>
+                <th style="text-align:center;">ラベル</th>
+                <th style="text-align:center;">練習する</th>
             </tr>
           </thead>
           <tbody>
                 {% for key, value in all_alg.items() %}
-                  <tr>
-                    <td>{{ key }}</td>
-                    <td>{{ value }}</td>
+                  <tr style="padding:0px;">
+                    <td  align="center" style="padding:2px;">{{ key }}</td>
+                    <td align="center" style="padding:2px; align=center;">{{ value }}</td>
+                      <td align="center" style="padding:2px;">{{ numberings[loop.index0] }}</td>
+                    <td align="center" style="padding:2px;" ><input type="checkbox" name="target" value="{{key}}" id="{{key}}">
+                    <label for="{{key}}">練習</label></td>
                   </tr>
                 {% endfor %}
           </tbody>
-</table>
+　　　　 </table>
+             <h5 style="position:absolute; left: 500px; top: 150px;">スクランブル生成</h5>
+             <p style="position:absolute; left: 512px; top: 235px; font-size:12px;">生成数</p>
+             <input type="number" class="input" name="num_scramble" min="1" max="110" step="1" value="10" style="position:absolute; left: 500px; top: 200px; width:60px;">
+             <input type="submit" id="submit_button" class="btn btn-primary" name="test" onclick="get_buttons_content()" value="生成" style="position:absolute; left: 580px; top: 200px; width:90px;">
+         </div>
+        </form>
     </div>
-
+　　<script src="https://unpkg.com/form-storage@latest/build/form-storage.min.js"></script>
 
 {% endblock %}
 

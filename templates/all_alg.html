@@ -10,14 +10,29 @@
         </form>
         <form method="POST" action="/scramble/result">
         <div class="sense1">
+            <div class="header">
+                <h4 style="">スクランブル生成</h4>
+                <div style="margin-top:20px;">
+                    <nobr>
+                        <p style="font-size:15px;"><b>生成数：</b>
+                        <input type="number" class="input" name="num_scramble" min="1" max="200" step="1" value="30" style="width:60px;"></p>
+                    </nobr>
+                </div>
+                <div>
+                    <input type="radio" name="sc_type" value="both" id="sense_○"><label for="sense_○" style="width:80px;">両方</label>
+                    <input type="radio" name="sc_type" value="edge" id="bonsai" checked><label for="bonsai" style="width:80px;">エッジ</label>
+                    <input type="radio" name="sc_type" value="corner" id="sense_x"><label for="sense_x" style="width:80px;">コーナー</label>
+                </div>
+                <input type="submit" id="submit_button" class="btn btn-primary" name="test" onclick="get_buttons_content()" value="生成" style="position:relative; left:280px;height:50px; width:80px;">
+            </div>
             <div class="tab">
                 <ul class="menu">
                     <li><a href="#" data-id="edge" class="active menu_item">エッジ</a></li>
                     <li><a href="#" data-id="corner" class="menu_item">コーナー</a></li>
                 </ul>
             </div>
-            <div id="edge" style="background-color:white;">
-              <table class="table table-responsive table-striped" style="margin-top:30px;">
+            <div id="edge" style="background-color:white; position:relative; top:0px;">
+              <table class="table table-responsive table-striped" style="margin-top:0px;">
                   <thead>
                     <tr>
                         <th style="text-align:center;">位置</th>
@@ -62,14 +77,6 @@
                   </tbody>
         　　　　 </table>
             </div>
-             <h4 style="position:absolute; left: 85px; top: 270px;">スクランブル生成</h4>
-             <p style="position:absolute; left: 125px; top: 318px; font-size:15px;"><b>生成数：</b></p>
-             <input type="number" class="input" name="num_scramble" min="1" max="200" step="1" value="30" style="position:absolute; left: 190px; top: 315px; width:60px;">
-                <input type="radio" name="sc_type" value="both" id="sense_○"><label for="sense_○" style="position:absolute; left: 120px; top: 365px; width:80px;">両方</label>
-                <input type="radio" name="sc_type" value="edge" id="bonsai" checked><label for="bonsai" style="position:absolute; left: 205px; top: 365px; width:80px;">エッジ</label>
-                <input type="radio" name="sc_type" value="corner" id="sense_x"><label for="sense_x" style="position:absolute; left: 290px; top: 365px; width:80px;">コーナー</label>
-
-             <input type="submit" id="submit_button" class="btn btn-primary" name="test" onclick="get_buttons_content()" value="生成" style="position:absolute; left: 380px; top: 295px; height:90px; width:110px;">
          </div>
         </form>
     </div>

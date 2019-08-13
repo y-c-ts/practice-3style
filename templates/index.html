@@ -6,6 +6,10 @@
     <title>Practice_3style</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style type="text/css">
+    body{
+        background-color:rgb(243, 243, 242);
+        margin-left: 10px;
+         }
 
     li {
       list-style: none;
@@ -93,6 +97,37 @@
         background-color:#1e90ff;
       }
 
+   .tab ul.menu {
+    margin-top:160px;
+    margin-bottom: 0px;
+    list-style: none;
+    padding: 0;
+    font-size: 0;
+   }
+    .tab ul.menu li {
+    display: inline-block;
+    }
+    .tab ul.menu li a {
+        width:150px;
+        margin:0 5px;
+        display:inline-block;
+        padding:12px 0;
+        color:#999;
+        background:#ddd;
+        text-align:center;
+        font-size:16px;
+        cursor:pointer;
+        transition:ease 0.2s;}
+
+    .tab ul.menu li a.active {
+        background: #353d3e;
+        color: #fff;
+        }
+    .tab ul.menu li a:not(.active):hover {
+        opacity: 0.5;
+        transition: .8s;
+        }
+
 
     </style>
   </head>
@@ -125,4 +160,35 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script
     src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+        (function() {
+            'use strict';
+
+            var menuItems = document.getElementsByClassName('menu_item');
+            var contents = document.getElementsByClassName('content');
+            var i;
+
+            for (i = 0; i < menuItems.length; i++) {
+                menuItems[i].addEventListener('click', function(e) {
+                e.preventDefault();
+
+                var i;
+
+                for (i = 0; i < menuItems.length; i++) {
+                    menuItems[i].className = 'menu_item';
+                }
+
+                this.className = 'menu_item active';
+
+                for (i = 0; i < contents.length; i++) {
+                    contents[i].className = 'content';
+                }
+
+                document.getElementById(this.dataset.id).className = 'content active';
+
+                });
+            }
+
+            })();
+        </script>
 </html>

@@ -42,20 +42,41 @@ def scramble():
         target_list = request.form.getlist('target')
         n_scramble = request.form['num_scramble']
         for i in range(int(n_scramble)):
-            targets = select_target(target_list)
-            state = alg_state_obj.get_multi_alg_state(targets)
+            if request.form['sc_type'] == 'edge':
+                targets = select_edge_target(target_list)
+                state = alg_state_obj.get_multi_edge_alg_state(targets)
+            elif request.form['sc_type'] == 'corner':
+                targets = select_corner_target(target_list)
+                state = alg_state_obj.get_multi_edge_alg_state(targets)
             cube_string_obj = CubeString(state)
             scramble = cube_string_obj.scramble
             scramble_list.append(scramble)
         return render_template('show_scramble.html', scrambles=np.unique(scramble_list))
 
 
-def select_target(target_list):
+def select_corner_target(target_list):
     used_target_list = []
     return_target_list = []
     random.shuffle(target_list)
     for target in target_list:
-        print(target)
+        target1, target2 = target.split('-')
+        ng_list = [target1, target1[1] + target1[2] + target1[0],
+                   target1[2] + target[0] + target1[1], target2,
+                   target2[1] + target2[2] + target2[0],
+                   target2[2] + target2[0] + target2[1]]
+        if np.in1d(np.array(ng_list), np.array(used_target_list)).sum() == 0:
+            return_target_list.append(target)
+            if len(return_target_list) == 5:
+                break
+        used_target_list.extend(ng_list)
+    return return_target_list
+
+
+def select_edge_target(target_list):
+    used_target_list = []
+    return_target_list = []
+    random.shuffle(target_list)
+    for target in target_list:
         target1, target2 = target.split('-')
         ng_list = [target1, target1[::-1], target2, target2[::-1]]
         if np.in1d(np.array(ng_list), np.array(used_target_list)).sum() == 0:

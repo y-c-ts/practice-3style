@@ -10,31 +10,66 @@
         </form>
         <form method="POST" action="/scramble/result">
         <div class="sense1">
-      <table class="table table-responsive table-striped">
-          <thead>
-            <tr>
-                <th style="text-align:center;">位置</th>
-                <th style="text-align:center;">手順</th>
-                <th style="text-align:center;">ラベル</th>
-                <th style="text-align:center;">練習する</th>
-            </tr>
-          </thead>
-          <tbody>
-                {% for key, value in all_alg.items() %}
-                  <tr style="padding:0px;">
-                    <td  align="center" style="padding:2px;">{{ key }}</td>
-                    <td align="center" style="padding:2px; align=center;">{{ value }}</td>
-                      <td align="center" style="padding:2px;">{{ numberings[loop.index0] }}</td>
-                    <td align="center" style="padding:2px;" ><input type="checkbox" name="target" value="{{key}}" id="{{key}}">
-                    <label for="{{key}}">練習</label></td>
-                  </tr>
-                {% endfor %}
-          </tbody>
-　　　　 </table>
-             <h5 style="position:absolute; left: 500px; top: 150px;">スクランブル生成</h5>
-             <p style="position:absolute; left: 512px; top: 235px; font-size:12px;">生成数</p>
-             <input type="number" class="input" name="num_scramble" min="1" max="110" step="1" value="10" style="position:absolute; left: 500px; top: 200px; width:60px;">
-             <input type="submit" id="submit_button" class="btn btn-primary" name="test" onclick="get_buttons_content()" value="生成" style="position:absolute; left: 580px; top: 200px; width:90px;">
+            <div class="tab">
+                <ul class="menu">
+                    <li><a href="#" data-id="edge" class="active menu_item">エッジ</a></li>
+                    <li><a href="#" data-id="corner" class="menu_item">コーナー</a></li>
+                </ul>
+            </div>
+            <div id="edge" style="background-color:white;">
+              <table class="table table-responsive table-striped" style="margin-top:30px;">
+                  <thead>
+                    <tr>
+                        <th style="text-align:center;">位置</th>
+                        <th style="text-align:center;">手順</th>
+                        <th style="text-align:center;">ラベル</th>
+                        <th style="text-align:center;">練習する</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        {% for key, value in all_alg.items() %}
+                          <tr style="padding:0px;">
+                            <td  align="center" style="padding:2px;">{{ key }}</td>
+                            <td align="center" style="padding:2px; align=center;">{{ value }}</td>
+                              <td align="center" style="padding:2px;">{{ numberings[loop.index0] }}</td>
+                            <td align="center" style="padding:2px;" ><input type="checkbox" name="target" value="{{key}}" id="{{key}}">
+                            <label for="{{key}}">練習</label></td>
+                          </tr>
+                        {% endfor %}
+                  </tbody>
+        　　　　 </table>
+            </div>
+            <div id="corner" style="background-color:white;">
+              <table class="table table-responsive table-striped" style="margin-top:0px;">
+                  <thead>
+                    <tr>
+                        <th style="text-align:center;">位置</th>
+                        <th style="text-align:center;">手順</th>
+                        <th style="text-align:center;">ラベル</th>
+                        <th style="text-align:center;">練習する</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        {% for key, value in all_alg.items() %}
+                          <tr style="padding:0px;">
+                            <td  align="center" style="padding:2px;">{{ key }}</td>
+                            <td align="center" style="padding:2px; align=center;">{{ value }}</td>
+                              <td align="center" style="padding:2px;">{{ numberings[loop.index0] }}</td>
+                            <td align="center" style="padding:2px;" ><input type="checkbox" name="target" value="{{key}}" id="{{key}}">
+                            <label for="{{key}}">練習</label></td>
+                          </tr>
+                        {% endfor %}
+                  </tbody>
+        　　　　 </table>
+            </div>
+             <h4 style="position:absolute; left: 85px; top: 270px;">スクランブル生成</h4>
+             <p style="position:absolute; left: 125px; top: 318px; font-size:15px;"><b>生成数：</b></p>
+             <input type="number" class="input" name="num_scramble" min="1" max="200" step="1" value="30" style="position:absolute; left: 190px; top: 315px; width:60px;">
+                <input type="radio" name="sc_type" value="both" id="sense_○"><label for="sense_○" style="position:absolute; left: 120px; top: 365px; width:80px;">両方</label>
+                <input type="radio" name="sc_type" value="edge" id="bonsai" checked><label for="bonsai" style="position:absolute; left: 205px; top: 365px; width:80px;">エッジ</label>
+                <input type="radio" name="sc_type" value="corner" id="sense_x"><label for="sense_x" style="position:absolute; left: 290px; top: 365px; width:80px;">コーナー</label>
+
+             <input type="submit" id="submit_button" class="btn btn-primary" name="test" onclick="get_buttons_content()" value="生成" style="position:absolute; left: 380px; top: 295px; height:90px; width:110px;">
          </div>
         </form>
     </div>
